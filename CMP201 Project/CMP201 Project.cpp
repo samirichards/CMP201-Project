@@ -9,7 +9,7 @@ int skip[256];
 /// <summary>
 /// Populates in_pattern array, used to quickly determine if any given character is in the pattern
 /// </summary>
-/// <param name="pattern">Pointer to the string representing the pattern to search for</param>
+/// <param name="pattern">: Pointer to the string representing the pattern to search for</param>
 void getPattern(string* pattern) {
     for (int i = 0; i < 256; ++i) 
     {
@@ -24,7 +24,7 @@ void getPattern(string* pattern) {
 /// <summary>
 /// Gets the number of places that can be skipped for each occurance of a letter in the pattern
 /// </summary>
-/// <param name="pattern">The text being searched for</param>
+/// <param name="pattern">: The text being searched for</param>
 void getSkip(string* pattern) {
     for (int i = 0; i < 256; ++i) 
     {
