@@ -43,11 +43,7 @@ void getSkip(string* pattern) {
 /// <param name="needle">The text being searched for within the haystack</param>
 /// <returns></returns>
 list<int> bmSearch(string* haystack, string* needle) {
-    getPattern(needle);
     getSkip(needle);
-    //Uhhhhh I think this is what you need to do to do this?
-    //Finish it
-    //Unless it's not what you're meant to do, in which case leave it and do that instead
 }
 
 int main()
