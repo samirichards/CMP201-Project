@@ -1,13 +1,16 @@
 #include <iostream>
 #include <list>
+#include <unordered_map>
 
 using namespace std;
 
+//TODO: REMOVE THIS ONCE YOU KNOW YOU DON'T NEED IT
 bool in_pattern[256];
 int skip[256];
 
 /// <summary>
 /// Populates in_pattern array, used to quickly determine if any given character is in the pattern
+/// TODO: REMOVE THIS ONCE YOU KNOW YOU DON'T NEED IT
 /// </summary>
 /// <param name="pattern">: Pointer to the string representing the pattern to search for</param>
 void getPattern(string* pattern) {
@@ -38,7 +41,6 @@ void getSkip(string* pattern) {
 
 /// <summary>
 /// Implements the Boyer-Moore Search algorithm for use with std::strings, returns a list of ints represnting the start index of each occurance of the needle
-/// Written with the help of this document http://personal.kent.edu/~rmuhamma/Algorithms/MyAlgorithms/StringMatch/boyerMoore.htm
 /// </summary>
 /// <param name="haystack">The text to be searched</param>
 /// <param name="needle">The text being searched for within the haystack</param>
@@ -73,21 +75,62 @@ list<int> bmSearch(string* haystack, string* needle) {
     return indexes;
 }
 
+size_t hashString(string input) {
+    hash<string> hasher;
+    return hasher(input);
+}
+
+/// <summary>
+/// Implements the Rabin-Karp Search Algorithm for use with std::strings, returns a list of ints represnting the start index of each occurance of the needle
+/// </summary>
+/// <param name="haystack">The text to be searched</param>
+/// <param name="needle">The text being searched for within the haystack</param>
+/// <returns></returns>
+list<int> rkSearch(string* haystack, string* needle) {
+    list<int> indexes;
+    auto needle_length = needle->length();
+    auto haystack_length = haystack->length();
+
+
+
+
+    return indexes;
+}
+
 int main()
 {
     //Implement the next algorithm now
     string text = "This is a test, this is also a test whoah";
     string pattern = "is";
-    auto indexList = bmSearch(&text, &pattern);
+    cout << "---Boyer-Moore---\n";
     cout << "Text to Search: " << text << endl;
     cout << "Pattern Searcing for: " << pattern << endl;
-    if (indexList.size() > 0)
+    auto bmIndexList = bmSearch(&text, &pattern);
+    if (bmIndexList.size() > 0)
     {
         cout << "Found pattern at the following indexes: ";
-        for (auto item : indexList)
+        for (auto item : bmIndexList)
         {
             cout << item << " ";
         }
+        cout << endl << endl;
+    }
+    else
+    {
+        cout << "No items found\n";
+    }
+    cout << "---Rabin-Karp---\n";
+    cout << "Text to Search: " << text << endl;
+    cout << "Pattern Searcing for: " << pattern << endl;
+    auto rkIndexList = rkSearch(&text, &pattern);
+    if (rkIndexList.size() > 0)
+    {
+        cout << "Found pattern at the following indexes: ";
+        for (auto item : rkIndexList)
+        {
+            cout << item << " ";
+        }
+        cout << endl << endl;
     }
     else
     {
