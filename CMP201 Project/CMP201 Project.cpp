@@ -5,8 +5,8 @@
 using namespace std;
 
 //TODO: REMOVE THIS ONCE YOU KNOW YOU DON'T NEED IT
-bool in_pattern[256];
-int skip[256];
+bool in_pattern[512];
+int skip[512];
 
 /// <summary>
 /// Populates in_pattern array, used to quickly determine if any given character is in the pattern
@@ -14,13 +14,16 @@ int skip[256];
 /// </summary>
 /// <param name="pattern">: Pointer to the string representing the pattern to search for</param>
 void getPattern(string* pattern) {
-    for (int i = 0; i < 256; ++i) 
+    for (int i = 0; i < 512; ++i)
     {
         in_pattern[i] = false; //Default to not in pattern
     }
     for (size_t i = 0; i < pattern->length(); i++)
     {
-        in_pattern[int(pattern->data()[i])] = true; //Set value at index equal to current char code in pattern to true (to know that char shows up in the pattern)
+        in_pattern[tolower(int(pattern->data()[i]))] = true; 
+        in_pattern[toupper(int(pattern->data()[i]))] = true;
+        //Set value at index equal to current char code in pattern to true (to know that char shows up in the pattern)
+        //Works upper or lower case now
     }
 }
 
@@ -29,13 +32,16 @@ void getPattern(string* pattern) {
 /// </summary>
 /// <param name="pattern">: The text being searched for</param>
 void getSkip(string* pattern) {
-    for (size_t i = 0; i < 256; ++i) 
+    for (size_t i = 0; i < 512; ++i)
     {
         skip[i] = pattern->length(); // Not in the pattern, skip to end
     }
     for (size_t i = 0; i < pattern->length(); ++i) 
     {
-        skip[int(pattern->data()[i])] = (pattern->length() - 1) - i; //Sets how many characters the algorithm is allowed to skip
+        skip[int(tolower(pattern->data()[i]))] = (pattern->length() - 1) - i;
+        skip[int(toupper(pattern->data()[i]))] = (pattern->length() - 1) - i;
+        //Sets how many characters to skip for each occurance of that character during the search
+        //Works for both upper and lower case now
     }
 }
 
@@ -48,27 +54,31 @@ void getSkip(string* pattern) {
 list<int> bmSearch(string* haystack, string* needle) {
     list<int> indexes;
     getSkip(needle);
-    getPattern(needle);
     auto needle_length = needle->length();
     auto haystack_length = haystack->length();
 
-    for (size_t i = 0; i < haystack_length - needle_length + 1; i++)
+    skip;
+    in_pattern;
+    if (needle_length < haystack_length)
     {
-        int s = skip[int(haystack->data()[i + needle_length - 1])];
-        if (s != 0) {
-            i += s - 1; // Skip forwards.
-            continue;
-        }
-        for (size_t j = 0; j < needle_length; j++)
+        for (size_t i = 0; i < haystack_length - needle_length + 1; i++)
         {
-            if (tolower(haystack->data()[i + j]) != tolower(needle->data()[j]) || toupper(haystack->data()[i + j]) != toupper(needle->data()[j]))
-            {
-                break;
+            int s = skip[int(haystack->data()[i + needle_length - 1])];
+            if (s != 0) {
+                i += s - 1; // Skip forwards.
+                continue;
             }
-            else
+            for (size_t j = 0; j < needle_length; j++)
             {
-                indexes.push_back(i);
-                j = needle_length;
+                if (tolower(haystack->data()[i + j]) != tolower(needle->data()[j]) || toupper(haystack->data()[i + j]) != toupper(needle->data()[j]))
+                {
+                    break;
+                }
+                else
+                {
+                    indexes.push_back(i);
+                    break;
+                }
             }
         }
     }
@@ -101,7 +111,7 @@ int main()
 {
     //Implement the next algorithm now
     string text = "This is a test, this is also a test whoah";
-    string pattern = "is";
+    string pattern = "t";
     cout << "---Boyer-Moore---\n";
     cout << "Text to Search: " << text << endl;
     cout << "Pattern Searcing for: " << pattern << endl;
