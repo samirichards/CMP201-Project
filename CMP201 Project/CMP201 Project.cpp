@@ -101,7 +101,7 @@ list<int> rkSearch(string* haystack, string* needle) {
     auto needle_length = needle->length();
     auto haystack_length = haystack->length();
 
-
+    //Ugh, do this pls thanks
 
 
     return indexes;
@@ -109,7 +109,6 @@ list<int> rkSearch(string* haystack, string* needle) {
 
 int main()
 {
-    //Implement the next algorithm now
     string text = "This is a test, this is also a test whoah";
     string pattern = "t";
     cout << "---Boyer-Moore---\n";
