@@ -13,7 +13,8 @@ int skip[512];
 /// TODO: REMOVE THIS ONCE YOU KNOW YOU DON'T NEED IT
 /// </summary>
 /// <param name="pattern">: Pointer to the string representing the pattern to search for</param>
-void getPattern(string* pattern) {
+void getPattern(string* pattern) 
+{
     for (int i = 0; i < 512; ++i)
     {
         in_pattern[i] = false; //Default to not in pattern
@@ -31,7 +32,8 @@ void getPattern(string* pattern) {
 /// Gets the number of places that can be skipped for each occurance of a letter in the pattern
 /// </summary>
 /// <param name="pattern">: The text being searched for</param>
-void getSkip(string* pattern) {
+void getSkip(string* pattern) 
+{
     for (size_t i = 0; i < 512; ++i)
     {
         skip[i] = pattern->length(); // Not in the pattern, skip to end
@@ -51,7 +53,8 @@ void getSkip(string* pattern) {
 /// <param name="haystack">The text to be searched</param>
 /// <param name="needle">The text being searched for within the haystack</param>
 /// <returns></returns>
-list<int> bmSearch(string* haystack, string* needle) {
+list<int> bmSearch(string* haystack, string* needle) 
+{
     list<int> indexes;
     getSkip(needle);
     auto needle_length = needle->length();
@@ -59,7 +62,7 @@ list<int> bmSearch(string* haystack, string* needle) {
 
     skip;
     in_pattern;
-    if (needle_length < haystack_length)
+    if (needle_length <= haystack_length)
     {
         for (size_t i = 0; i < haystack_length - needle_length + 1; i++)
         {
@@ -85,9 +88,46 @@ list<int> bmSearch(string* haystack, string* needle) {
     return indexes;
 }
 
-size_t hashString(string input) {
-    hash<string> hasher;
-    return hasher(input);
+/// <summary>
+/// Returns hash of given string
+/// </summary>
+/// <param name="input">Pointer to string (or substring)</param>
+/// <returns></returns>
+int hashString(string input) 
+{
+    auto total = 0;
+    for (size_t i = 0; i < input.length(); i++)
+    {
+        total += tolower(input.data()[i]);
+    }
+    return total;
+}
+
+/// <summary>
+/// Re-computes given hash with remChar removed and addChar added
+/// </summary>
+/// <param name="hash">Hash which needs to be re-calculated</param>
+/// <param name="remChar">Character to remove</param>
+/// <param name="addChar">Character to add</param>
+/// <returns></returns>
+void hashString(int &hash, const char remChar, const char addChar)
+{
+    hash = ((hash - tolower(remChar)) + tolower(addChar));
+}
+
+/// <summary>
+/// Returns a given string as lowercase
+/// </summary>
+/// <param name="input">The string to be shifted down a case</param>
+/// <returns></returns>
+string toLowerString(string input) 
+{
+    string temp = "";
+    for (size_t i = 0; i < input.length(); i++)
+    {
+        temp += tolower(input.data()[i]);
+    }
+    return temp;
 }
 
 /// <summary>
@@ -96,20 +136,37 @@ size_t hashString(string input) {
 /// <param name="haystack">The text to be searched</param>
 /// <param name="needle">The text being searched for within the haystack</param>
 /// <returns></returns>
-list<int> rkSearch(string* haystack, string* needle) {
+list<int> rkSearch(string* haystack, string* needle) 
+{
     list<int> indexes;
+    if (needle->length() > haystack->length())
+    {
+        return indexes;
+    }
     auto needle_length = needle->length();
     auto haystack_length = haystack->length();
-
-    //Ugh, do this pls thanks
-
-
+    int needleHash = hashString(*needle);
+    int currentHash = hashString((haystack->substr(0, needle_length)));
+    for (size_t i = 0; i < haystack_length - needle_length + 1; i++)
+    {
+        if (i > 0)
+        {
+            hashString(currentHash, haystack->data()[i - 1], haystack->data()[i + needle_length - 1]);
+        }
+        if (currentHash == needleHash)
+        {
+            if (toLowerString(haystack->substr(i, needle_length)) == toLowerString(*needle))
+            {
+                indexes.push_back(i);
+            }
+        }
+    }
     return indexes;
 }
 
-int main()
+int main() 
 {
-    string text = "This is a test, this is also a test whoah";
+    string text = "test";
     string pattern = "t";
     cout << "---Boyer-Moore---\n";
     cout << "Text to Search: " << text << endl;
