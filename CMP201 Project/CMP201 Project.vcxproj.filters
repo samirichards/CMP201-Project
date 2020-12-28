@@ -18,5 +18,13 @@
     <ClCompile Include="CMP201 Project.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="StringSearching.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="StringSearching.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -146,6 +146,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CMP201 Project.cpp" />
+    <ClCompile Include="StringSearching.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="StringSearching.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
